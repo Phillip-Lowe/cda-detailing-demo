@@ -102,7 +102,8 @@ body {
 
 /* ===== HERO ===== */
 .hero {
-  background: linear-gradient(135deg, var(--c-primary) 0%, #0f2744 50%, var(--c-primary-light) 100%);
+  background: linear-gradient(135deg, rgba(26,54,93,0.92) 0%, rgba(15,39,68,0.95) 50%, rgba(44,82,130,0.92) 100%),
+              url('images/hero-banner.png') center/cover no-repeat;
   color: white;
   padding: 48px 20px 56px;
   text-align: center;
@@ -1046,6 +1047,7 @@ function showConfirmation(data) {
   div.id = 'confirmationPage';
   div.innerHTML = `
     <div class="confirmation-wrap">
+      <img src="images/unnamed-3.jpg" alt="CDA Detailing" style="width:100%;max-width:320px;height:180px;object-fit:cover;border-radius:16px;margin-bottom:20px;" />
       <div class="emoji">✅</div>
       <h2>Booking Request Received!</h2>
       <p>Thanks, ${data.name}. We've got your appointment request and will confirm shortly.</p>
