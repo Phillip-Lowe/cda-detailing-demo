@@ -673,8 +673,8 @@ body {
       <div class="form-group">
         <label>Optional Add-ons</label>
         <div class="addons-list">
-          <div class="addon-row" data-addon="engine_bay" data-price="6000" onclick="toggleAddon(this)">
-            <input type="checkbox" id="addon-engine_bay" />
+          <div class="addon-row" data-addon="engine_bay" data-price="6000">
+            <input type="checkbox" id="addon-engine_bay" onchange="onAddonChange(this, 'engine_bay', 6000)" />
             <label for="addon-engine_bay">Engine Bay Detail</label>
             <span class="addon-price">+$60</span>
           </div>
@@ -878,20 +878,12 @@ function goToStep(step) {
 }
 
 // ===================== ADD-ONS =====================
-function toggleAddon(row) {
-  const code = row.dataset.addon;
-  const priceCents = parseInt(row.dataset.price);
-  const cb = row.querySelector('input[type="checkbox"]');
+function onAddonChange(checkbox, code, priceCents) {
+  const isChecked = checkbox.checked;
+  const label = checkbox.nextElementSibling.textContent;
 
-  // Toggle checkbox state
-  cb.checked = !cb.checked;
-
-  if (cb.checked) {
-    selectedAddons.push({
-      code,
-      price_cents: priceCents,
-      label: row.querySelector('label').textContent
-    });
+  if (isChecked) {
+    selectedAddons.push({ code, price_cents: priceCents, label: label });
   } else {
     selectedAddons = selectedAddons.filter(a => a.code !== code);
   }

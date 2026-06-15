@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head><title>Addon Test</title></head>
+<body>
+  <h2>Test Addon Toggle</h2>
+  
+  <div class="addon-row" data-addon="engine_bay" data-price="6000" onclick="toggleAddon(this)">
+    <input type="checkbox" id="addon-engine_bay" />
+    <label for="addon-engine_bay">Engine Bay Detail</label>
+    <span>+$60</span>
+  </div>
+  
+  <div id="status">Addons: []</div>
+  <div id="price">Price: $0</div>
+
+  <script>
+    let selectedAddons = [];
+    
+    function toggleAddon(row) {
+      console.log('toggleAddon called');
+      const code = row.dataset.addon;
+      const priceCents = parseInt(row.dataset.price);
+      const cb = row.querySelector('input[type="checkbox"]');
+      
+      console.log('Before toggle - checked:', cb.checked);
+      cb.checked = !cb.checked;
+      console.log('After toggle - checked:', cb.checked);
+      
+      if (cb.checked) {
+        selectedAddons.push({ code, price_cents: priceCents, label: 'Engine Bay' });
+      } else {
+        selectedAddons = selectedAddons.filter(a => a.code !== code);
+      }
+      
+      const total = selectedAddons.reduce((s, a) => s + a.price_cents, 0);
+      document.getElementById('status').textContent = 'Addons: ' + JSON.stringify(selectedAddons.map(a => a.code));
+      document.getElementById('price').textContent = 'Price: $' + (total/100).toFixed(2);
+    }
+  </script>
+</body>
+</html>
