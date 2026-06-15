@@ -677,9 +677,9 @@ body {
         <label>Optional Add-ons</label>
         <div class="addons-list">
           <div class="addon-row" onclick="toggleAddon(this, 'engine_bay', 6000)">
-            <input type="checkbox" data-addon="engine_bay" data-price="6000" />
-            <label>Engine Bay Detail</label>
-            <span class="addon-price">+$60</span>
+            <input type="checkbox" data-addon="engine_bay" data-price="6000" onclick="event.stopPropagation()" />
+            <label onclick="event.stopPropagation()">Engine Bay Detail</label>
+            <span class="addon-price" onclick="event.stopPropagation()">+$60</span>
           </div>
         </div>
       </div>
@@ -898,7 +898,9 @@ function updateSummary() {
   const svc = SERVICES.find(s => s.id === selectedService);
   const basePrice = svc.prices[selectedSize];
   const addonTotal = selectedAddons.reduce((s, a) => s + a.price_cents, 0);
-  const total = basePrice + addonTotal;
+  const subtotal = basePrice + addonTotal;
+  const tax = Math.round(subtotal * 0.0952);
+  const total = subtotal + tax;
 
   const date = document.getElementById('bookingDate').value;
   const time = document.getElementById('bookingTime').value;
@@ -920,6 +922,14 @@ function updateSummary() {
         <span>$${formatPrice(a.price_cents)}</span>
       </div>
     `).join('')}
+    <div class="summary-line" style="border-top:1px solid rgba(255,255,255,0.15);padding-top:10px;margin-top:4px;">
+      <span>Subtotal</span>
+      <span>$${formatPrice(subtotal)}</span>
+    </div>
+    <div class="summary-line">
+      <span>Tax (9.52%)</span>
+      <span>$${formatPrice(tax)}</span>
+    </div>
     <div class="summary-line total">
       <span>Total</span>
       <span>$${formatPrice(total)}</span>
@@ -949,42 +959,50 @@ async function submitBooking() {
   const svc = SERVICES.find(s => s.id === selectedService);
   const basePrice = svc.prices[selectedSize];
   const addonTotal = selectedAddons.reduce((s, a) => s + a.price_cents, 0);
-  const total = basePrice + addonTotal;
+  const subtotal = basePrice + addonTotal;
+  const tax = Math.round(subtotal * 0.0952);
+  const total = subtotal + tax;
 
+  const date = document.getElementById('bookingDate').value;
+  const time = document.getElementById('bookingTime').value;
+
+  // Flattened payload matching n8n Code node expectations
   const payload = {
-    // Booking info
-    booking: {
-      service_id: selectedService,
-      service_name: svc.shortName,
-      service_full_name: svc.name,
-      vehicle_size: selectedSize,
-      vehicle_size_label: VEHICLE_SIZES[selectedSize].label,
-      date: document.getElementById('bookingDate').value,
-      time: document.getElementById('bookingTime').value,
-      address: document.getElementById('vehicleAddress').value.trim(),
-      vehicle_info: document.getElementById('vehicleInfo').value.trim(),
-      addons: selectedAddons,
-    },
-    // Pricing
-    pricing: {
-      base_cents: basePrice,
-      addons_cents: addonTotal,
-      total_cents: total,
-      total_display: '$' + formatPrice(total),
-    },
-    // Customer
-    customer: {
-      name: name,
-      email: email,
-      phone: phone,
-      notes: document.getElementById('customerNotes').value.trim(),
-    },
+    // Customer fields (top-level for your Code node)
+    name: name,
+    email: email,
+    phone: phone,
+    service: svc.shortName,
+    service_id: selectedService,
+    service_full: svc.name,
+    appointment_time: `${date} at ${formatTime(time)}`,
+    time: time,
+    date: date,
+    address: document.getElementById('vehicleAddress').value.trim(),
+    vehicle_info: document.getElementById('vehicleInfo').value.trim(),
+    vehicle_size: VEHICLE_SIZES[selectedSize].label,
+    notes: document.getElementById('customerNotes').value.trim(),
+    addons: selectedAddons.map(a => a.label).join(', ') || null,
+
+    // Pricing (cents)
+    base_price_cents: basePrice,
+    addons_cents: addonTotal,
+    subtotal_cents: subtotal,
+    tax_cents: tax,
+    tax_rate: 0.0952,
+    total_cents: total,
+
+    // Display-friendly pricing
+    base_price: '$' + formatPrice(basePrice),
+    addons_total: addonTotal > 0 ? '$' + formatPrice(addonTotal) : null,
+    subtotal: '$' + formatPrice(subtotal),
+    tax: '$' + formatPrice(tax),
+    total: '$' + formatPrice(total),
+
     // Metadata
-    meta: {
-      source: "web",
-      submitted_at: new Date().toISOString(),
-      brand: BRAND.name,
-    }
+    source: "web",
+    submitted_at: new Date().toISOString(),
+    brand: BRAND.name,
   };
 
   try {
@@ -1030,33 +1048,33 @@ function showConfirmation(data) {
     <div class="confirmation-wrap">
       <div class="emoji">✅</div>
       <h2>Booking Request Received!</h2>
-      <p>Thanks, ${data.customer.name}. We've got your appointment request and will confirm shortly.</p>
+      <p>Thanks, ${data.name}. We've got your appointment request and will confirm shortly.</p>
 
       <div class="detail-box">
         <div class="detail-line">
           <span class="label">Service</span>
-          <span class="value">${data.booking.service_full_name}</span>
+          <span class="value">${data.service_full}</span>
         </div>
         <div class="detail-line">
           <span class="label">Vehicle Size</span>
-          <span class="value">${data.booking.vehicle_size_label}</span>
+          <span class="value">${data.vehicle_size}</span>
         </div>
         <div class="detail-line">
           <span class="label">Date & Time</span>
-          <span class="value">${data.booking.date} at ${formatTime(data.booking.time)}</span>
+          <span class="value">${data.appointment_time}</span>
         </div>
         <div class="detail-line">
           <span class="label">Location</span>
-          <span class="value">${data.booking.address}</span>
+          <span class="value">${data.address}</span>
         </div>
         <div class="detail-line">
           <span class="label">Total</span>
-          <span class="value" style="color:var(--c-accent);font-size:16px;">${data.pricing.total_display}</span>
+          <span class="value" style="color:var(--c-accent);font-size:16px;">${data.total}</span>
         </div>
       </div>
 
       <p style="font-size:13px;color:var(--text-light);">
-        We'll text you at ${data.customer.phone} to confirm.<br>
+        We'll text you at ${data.phone} to confirm.<br>
         Questions? Call <a href="tel:${BRAND.phone}" style="color:var(--c-accent);">${BRAND.phone}</a>
       </p>
 
