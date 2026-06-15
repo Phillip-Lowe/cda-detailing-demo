@@ -975,9 +975,9 @@ async function submitBooking() {
     service: svc.shortName,
     service_id: selectedService,
     service_full: svc.name,
-    appointment_time: `${date} at ${formatTime(time)}`,
-    time: time,
-    date: date,
+    appointment_time: `${date}T${time}:00`,  // ISO format: 2026-06-16T08:00:00
+    appointment_date: date,
+    appointment_time_only: time,
     address: document.getElementById('vehicleAddress').value.trim(),
     vehicle_info: document.getElementById('vehicleInfo').value.trim(),
     vehicle_size: VEHICLE_SIZES[selectedSize].label,
@@ -1061,7 +1061,7 @@ function showConfirmation(data) {
         </div>
         <div class="detail-line">
           <span class="label">Date & Time</span>
-          <span class="value">${data.appointment_time}</span>
+          <span class="value">${data.appointment_date} at ${formatTime(data.appointment_time_only)}</span>
         </div>
         <div class="detail-line">
           <span class="label">Location</span>
