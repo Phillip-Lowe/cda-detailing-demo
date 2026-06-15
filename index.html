@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Book Appointment — CDA Mobile Detailing</title>
+<link rel="icon" type="image/jpeg" href="images/unnamed-2.jpg" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<script src="config.js"></script>
+<style>
+:root {
+  --c-primary: #1a365d;
+  --c-primary-light: #2c5282;
+  --c-accent: #3182ce;
+  --c-accent-hover: #2b6cb0;
+  --c-secondary: #4a5568;
+  --c-gold: #d69e2e;
+  --c-gold-light: #faf5eb;
+  --bg: #f7fafc;
+  --card: #ffffff;
+  --text: #1a202c;
+  --text-light: #718096;
+  --border: #e2e8f0;
+  --input-border: #cbd5e0;
+  --input-bg: #ffffff;
+  --focus: #3182ce;
+  --focus-ring: 0 0 0 3px rgba(49,130,206,0.18);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(17,24,39,0.08);
+  --shadow-lg: 0 12px 40px rgba(17,24,39,0.12);
+  --success: #38a169;
+  --error: #e53e3e;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-light) 50%, var(--c-secondary) 100%);
+  color: white;
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.header-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.brand-text h1 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+.brand-text span {
+  font-size: 12px;
+  opacity: 0.85;
+  font-weight: 400;
+}
+.header-phone {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.header-phone:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* ===== HERO ===== */
+.hero {
+  background: linear-gradient(135deg, var(--c-primary) 0%, #0f2744 50%, var(--c-primary-light) 100%);
+  color: white;
+  padding: 48px 20px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(214,158,46,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+.hero h2 .gold { color: var(--c-gold); }
+.hero p {
+  font-size: 16px;
+  opacity: 0.88;
+  max-width: 440px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  margin-top: 18px;
+  position: relative;
+  z-index: 1;
+}
+.status-pill .dot {
+  width: 8px; height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+.status-pill.closed .dot { background: var(--error); animation: none; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* ===== MAIN ===== */
+.main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+/* ===== PROGRESS STEPS ===== */
+.steps-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+.step .num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+.step.active .num { background: var(--c-accent); color: white; }
+.step.active { color: var(--c-accent); }
+.step.done .num { background: var(--success); color: white; }
+.step.done { color: var(--success); }
+
+/* ===== SECTION TITLE ===== */
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--c-primary);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-sub {
+  color: var(--text-light);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* ===== SERVICE CARDS ===== */
+.services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.service-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.service-card:hover { border-color: var(--c-accent); box-shadow: var(--shadow-lg); }
+.service-card.selected {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px rgba(49,130,206,0.15), var(--shadow-lg);
+}
+.service-card .popular-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--c-gold);
+  color: var(--c-primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 50px;
+  z-index: 2;
+}
+.service-photo {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+.service-content { padding: 20px 24px 24px; }
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 8px;
+}
+.service-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-primary);
+  line-height: 1.3;
+}
+.service-price {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-accent);
+  white-space: nowrap;
+  margin-left: 12px;
+}
+.service-desc {
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* Vehicle size selector inside card */
+.size-selector {
+  display: flex;
+  gap: 8px;
+}
+.size-btn {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.size-btn:hover { border-color: var(--c-accent); background: #ebf8ff; }
+.size-btn.active {
+  border-color: var(--c-accent);
+  background: #ebf8ff;
+  box-shadow: 0 0 0 2px rgba(49,130,206,0.12);
+}
+.size-btn .size-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  display: block;
+}
+.size-btn .size-examples {
+  font-size: 11px;
+  color: var(--text-light);
+  display: block;
+  margin-top: 2px;
+}
+.size-btn .size-price {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--c-accent);
+  display: block;
+  margin-top: 6px;
+}
+.size-btn.active .size-label { color: var(--c-accent); }
+
+/* ===== DATE/TIME ===== */
+.form-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.form-group { margin-bottom: 20px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.form-group label .required {
+  color: var(--error);
+  font-weight: 700;
+}
+.form-input, .form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text);
+  transition: all 0.2s;
+}
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: var(--focus-ring);
+}
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+.notes-area { min-height: 80px; resize: vertical; }
+
+/* ===== ADD-ONS ===== */
+.addons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.addon-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.addon-row:hover { background: #ebf8ff; }
+.addon-row input[type="checkbox"] {
+  width: 20px; height: 20px;
+  accent-color: var(--c-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.addon-row label {
+  flex: 1;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0;
+}
+.addon-row .addon-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-accent);
+}
+
+/* ===== ORDER SUMMARY ===== */
+.summary-card {
+  background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-light) 100%);
+  color: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.summary-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  font-size: 14px;
+}
+.summary-line:last-child { border-bottom: none; }
+.summary-line.total {
+  font-size: 20px;
+  font-weight: 800;
+  padding-top: 16px;
+  margin-top: 8px;
+  border-top: 2px solid rgba(255,255,255,0.3);
+}
+
+/* ===== SUBMIT ===== */
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--c-accent) 0%, var(--c-accent-hover) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(49,130,206,0.35);
+}
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.spinner {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--text-light);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+.footer a { color: var(--c-accent); text-decoration: none; }
+
+/* ===== ALERTS ===== */
+.alert {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+  max-width: 90vw;
+  text-align: center;
+}
+.alert.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.alert-info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+
+/* ===== CONFIRMATION ===== */
+.confirmation-wrap {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 32px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+.confirmation-wrap .emoji { font-size: 56px; margin-bottom: 16px; }
+.confirmation-wrap h2 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--c-primary);
+  margin-bottom: 12px;
+}
+.confirmation-wrap p { font-size: 15px; color: var(--text-light); line-height: 1.6; margin-bottom: 8px; }
+.confirmation-wrap .detail-box {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin: 20px 0;
+  text-align: left;
+}
+.confirmation-wrap .detail-box .detail-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.confirmation-wrap .detail-box .detail-line:last-child { border-bottom: none; }
+.confirmation-wrap .detail-box .detail-line .label { color: var(--text-light); }
+.confirmation-wrap .detail-box .detail-line .value { font-weight: 600; color: var(--text); }
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--c-accent);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+.cta-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(49,130,206,0.3); }
+
+/* Hidden */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <img src="images/unnamed-2.jpg" alt="CDA" class="brand-logo" id="headerLogo" />
+      <div class="brand-text">
+        <h1 id="headerName">CDA Mobile Detailing</h1>
+        <span id="headerTagline">Professional car detailing — we come to you</span>
+      </div>
+    </div>
+    <a href="tel:501-515-8451" class="header-phone" id="headerPhone">
+      📞 501-515-8451
+    </a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="heroSection">
+  <h2>Book Your Detail <span class="gold">Online</span></h2>
+  <p>Pick your package, choose a time, and we'll come to you. No phone calls needed.</p>
+  <div class="status-pill" id="statusPill">
+    <span class="dot"></span>
+    <span id="statusText">Open Now · Daily 7 AM – 8 PM</span>
+  </div>
+</section>
+
+<!-- Alerts -->
+<div id="alertSuccess" class="alert alert-success"></div>
+<div id="alertError" class="alert alert-error"></div>
+<div id="alertInfo" class="alert alert-info"></div>
+
+<!-- Main Content -->
+<main class="main" id="mainContent">
+
+  <!-- Progress Steps -->
+  <div class="steps-bar" id="stepsBar">
+    <div class="step active" data-step="1">
+      <span class="num">1</span>
+      <span>Package</span>
+    </div>
+    <div class="step" data-step="2">
+      <span class="num">2</span>
+      <span>Schedule</span>
+    </div>
+    <div class="step" data-step="3">
+      <span class="num">3</span>
+      <span>Details</span>
+    </div>
+  </div>
+
+  <!-- Step 1: Service Selection -->
+  <div id="step1" class="step-panel">
+    <div class="section-title">📋 Choose Your Package</div>
+    <p class="section-sub">Select a service package and vehicle size to see your price.</p>
+
+    <div class="services-grid" id="servicesGrid"></div>
+  </div>
+
+  <!-- Step 2: Date/Time -->
+  <div id="step2" class="step-panel hidden">
+    <div class="section-title">📅 Pick a Date & Time</div>
+    <p class="section-sub">We need at least 24 hours notice. Each appointment takes ~2 hours.</p>
+
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date <span class="required">*</span></label>
+          <input type="date" class="form-input" id="bookingDate" required />
+        </div>
+        <div class="form-group">
+          <label>Time <span class="required">*</span></label>
+          <select class="form-select" id="bookingTime" required>
+            <option value="">Select a time...</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Vehicle Location / Address <span class="required">*</span></label>
+        <input type="text" class="form-input" id="vehicleAddress" placeholder="123 Main St, Little Rock, AR" required />
+      </div>
+
+      <div class="form-group">
+        <label>Vehicle Info (year, make, model)</label>
+        <input type="text" class="form-input" id="vehicleInfo" placeholder="e.g. 2020 Honda Accord" />
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="goToStep(3)" id="step2Next">
+      Continue →
+    </button>
+  </div>
+
+  <!-- Step 3: Contact & Add-ons -->
+  <div id="step3" class="step-panel hidden">
+    <div class="section-title">👤 Your Info & Add-ons</div>
+    <p class="section-sub">Almost done — just a few details and you're set.</p>
+
+    <!-- Order Summary -->
+    <div class="summary-card" id="summaryCard"></div>
+
+    <!-- Add-ons -->
+    <div class="form-section">
+      <div class="form-group">
+        <label>Optional Add-ons</label>
+        <div class="addons-list">
+          <div class="addon-row" onclick="toggleAddon(this, 'engine_bay', 6000)">
+            <input type="checkbox" data-addon="engine_bay" data-price="6000" />
+            <label>Engine Bay Detail</label>
+            <span class="addon-price">+$60</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name <span class="required">*</span></label>
+          <input type="text" class="form-input" id="customerName" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label>Phone <span class="required">*</span></label>
+          <input type="tel" class="form-input" id="customerPhone" placeholder="(501) 555-0123" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email <span class="required">*</span></label>
+        <input type="email" class="form-input" id="customerEmail" placeholder="john@example.com" required />
+      </div>
+      <div class="form-group">
+        <label>Notes / Special Requests</label>
+        <textarea class="form-input notes-area" id="customerNotes" placeholder="Any specific concerns, pet hair, stains to focus on, etc."></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitBooking()" id="submitBtn">
+      📅 Confirm Booking
+    </button>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer" id="pageFooter">
+  <p>
+    <strong id="footerName">CDA Mobile Detailing</strong> · Professional car detailing at your location
+  </p>
+  <p style="margin-top:4px">
+    Questions? Call or text <a href="tel:501-515-8451" id="footerPhone">501-515-8451</a>
+    · Follow us on IG: <a href="https://instagram.com/CDAdetailing" target="_blank" id="footerIG">@CDAdetailing</a>
+  </p>
+</footer>
+
+<script>
+// ===================== STATE =====================
+let selectedService = null;
+let selectedSize = null;
+let selectedAddons = [];
+let currentStep = 1;
+
+// ===================== INIT =====================
+function init() {
+  // Set brand text from config
+  document.getElementById('headerName').textContent = BRAND.name;
+  document.getElementById('headerTagline').textContent = BRAND.tagline;
+  document.getElementById('headerPhone').href = 'tel:' + BRAND.phone;
+  document.getElementById('headerPhone').textContent = '📞 ' + BRAND.phone;
+  document.getElementById('footerName').textContent = BRAND.name;
+  document.getElementById('footerPhone').textContent = BRAND.phone;
+  document.getElementById('footerPhone').href = 'tel:' + BRAND.phone;
+  if (BRAND.instagram) {
+    document.getElementById('footerIG').textContent = BRAND.instagram;
+    document.getElementById('footerIG').href = 'https://instagram.com/' + BRAND.instagram.replace('@','');
+  }
+
+  // Min date = tomorrow (24h ahead)
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + BOOKING_CONFIG.maxDaysAhead);
+  const dateInput = document.getElementById('bookingDate');
+  dateInput.min = tomorrow.toISOString().split('T')[0];
+  dateInput.max = maxDate.toISOString().split('T')[0];
+
+  // Populate time slots
+  const timeSelect = document.getElementById('bookingTime');
+  TIME_SLOTS.forEach(t => {
+    const [h,m] = t.split(':');
+    const hour = parseInt(h);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+    const label = `${displayHour}:${m} ${ampm}`;
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = label;
+    timeSelect.appendChild(opt);
+  });
+
+  // Render services
+  renderServices();
+
+  // Check hours
+  checkHours();
+}
+
+// ===================== RENDER SERVICES =====================
+function renderServices() {
+  const grid = document.getElementById('servicesGrid');
+  grid.innerHTML = SERVICES.map(svc => `
+    <div class="service-card" id="card-${svc.id}" onclick="selectService('${svc.id}')">
+      ${svc.popular ? '<span class="popular-badge">MOST POPULAR</span>' : ''}
+      <img class="service-photo" src="${svc.photo}" alt="${svc.shortName}" loading="lazy" />
+      <div class="service-content">
+        <div class="service-header">
+          <div class="service-name">${svc.name}</div>
+          <div class="service-price" id="price-${svc.id}">$${formatPrice(svc.prices.medium)}</div>
+        </div>
+        <div class="service-desc">${svc.desc}</div>
+        <div class="size-selector" id="sizes-${svc.id}">
+          ${Object.entries(VEHICLE_SIZES).map(([key, info]) => `
+            <button type="button" class="size-btn" data-size="${key}"
+              onclick="event.stopPropagation(); selectSize('${svc.id}', '${key}')">
+              <span class="size-label">${info.label}</span>
+              <span class="size-examples">${info.examples}</span>
+              <span class="size-price">$${formatPrice(svc.prices[key])}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectService(id) {
+  // Deselect previous
+  if (selectedService) {
+    document.getElementById('card-' + selectedService)?.classList.remove('selected');
+  }
+  selectedService = id;
+  selectedSize = 'medium'; // default
+  document.getElementById('card-' + id).classList.add('selected');
+
+  // Highlight default size
+  document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+  const sizeBtn = document.querySelector(`#card-${id} .size-btn[data-size="medium"]`);
+  if (sizeBtn) sizeBtn.classList.add('active');
+
+  // Update price display
+  const svc = SERVICES.find(s => s.id === id);
+  document.getElementById('price-' + id).textContent = '$' + formatPrice(svc.prices.medium);
+
+  // Auto-advance to step 2 after short delay
+  setTimeout(() => goToStep(2), 400);
+}
+
+function selectSize(svcId, size) {
+  if (selectedService !== svcId) {
+    selectService(svcId);
+  }
+  selectedSize = size;
+
+  // Update UI
+  document.querySelectorAll(`#card-${svcId} .size-btn`).forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`#card-${svcId} .size-btn[data-size="${size}"]`).classList.add('active');
+
+  // Update displayed price
+  const svc = SERVICES.find(s => s.id === svcId);
+  document.getElementById('price-' + svcId).textContent = '$' + formatPrice(svc.prices[size]);
+}
+
+// ===================== NAVIGATION =====================
+function goToStep(step) {
+  // Validation
+  if (step === 2 && !selectedService) {
+    showAlert('error', 'Please select a service package first');
+    return;
+  }
+  if (step === 3) {
+    const date = document.getElementById('bookingDate').value;
+    const time = document.getElementById('bookingTime').value;
+    const addr = document.getElementById('vehicleAddress').value.trim();
+    if (!date) { showAlert('error', 'Please select a date'); return; }
+    if (!time) { showAlert('error', 'Please select a time'); return; }
+    if (!addr) { showAlert('error', 'Please enter your vehicle location'); return; }
+  }
+
+  currentStep = step;
+
+  // Show/hide panels
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById('step' + step).classList.remove('hidden');
+
+  // Update step bar
+  document.querySelectorAll('.step').forEach(el => {
+    const s = parseInt(el.dataset.step);
+    el.classList.remove('active', 'done');
+    if (s < step) el.classList.add('done');
+    else if (s === step) el.classList.add('active');
+  });
+
+  // Update summary if on step 3
+  if (step === 3) updateSummary();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===================== ADD-ONS =====================
+function toggleAddon(row, code, priceCents) {
+  const cb = row.querySelector('input[type="checkbox"]');
+  cb.checked = !cb.checked;
+
+  if (cb.checked) {
+    selectedAddons.push({ code, price_cents: priceCents, label: row.querySelector('label').textContent });
+  } else {
+    selectedAddons = selectedAddons.filter(a => a.code !== code);
+  }
+
+  updateSummary();
+}
+
+// ===================== ORDER SUMMARY =====================
+function updateSummary() {
+  if (!selectedService || !selectedSize) return;
+
+  const svc = SERVICES.find(s => s.id === selectedService);
+  const basePrice = svc.prices[selectedSize];
+  const addonTotal = selectedAddons.reduce((s, a) => s + a.price_cents, 0);
+  const total = basePrice + addonTotal;
+
+  const date = document.getElementById('bookingDate').value;
+  const time = document.getElementById('bookingTime').value;
+  const sizeInfo = VEHICLE_SIZES[selectedSize];
+
+  document.getElementById('summaryCard').innerHTML = `
+    <h3>📋 Booking Summary</h3>
+    <div class="summary-line">
+      <span>${svc.shortName}</span>
+      <span>${sizeInfo.label} Vehicle</span>
+    </div>
+    <div class="summary-line">
+      <span>Base Price</span>
+      <span>$${formatPrice(basePrice)}</span>
+    </div>
+    ${selectedAddons.map(a => `
+      <div class="summary-line">
+        <span>+ ${a.label}</span>
+        <span>$${formatPrice(a.price_cents)}</span>
+      </div>
+    `).join('')}
+    <div class="summary-line total">
+      <span>Total</span>
+      <span>$${formatPrice(total)}</span>
+    </div>
+    <div class="summary-line" style="margin-top:8px;opacity:0.9;">
+      <span>📅 ${date} at ${formatTime(time)}</span>
+      <span></span>
+    </div>
+  `;
+}
+
+// ===================== SUBMIT =====================
+async function submitBooking() {
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const email = document.getElementById('customerEmail').value.trim();
+
+  if (!name || !phone || !email) {
+    showAlert('error', 'Please fill in all required fields');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Booking...';
+
+  const svc = SERVICES.find(s => s.id === selectedService);
+  const basePrice = svc.prices[selectedSize];
+  const addonTotal = selectedAddons.reduce((s, a) => s + a.price_cents, 0);
+  const total = basePrice + addonTotal;
+
+  const payload = {
+    // Booking info
+    booking: {
+      service_id: selectedService,
+      service_name: svc.shortName,
+      service_full_name: svc.name,
+      vehicle_size: selectedSize,
+      vehicle_size_label: VEHICLE_SIZES[selectedSize].label,
+      date: document.getElementById('bookingDate').value,
+      time: document.getElementById('bookingTime').value,
+      address: document.getElementById('vehicleAddress').value.trim(),
+      vehicle_info: document.getElementById('vehicleInfo').value.trim(),
+      addons: selectedAddons,
+    },
+    // Pricing
+    pricing: {
+      base_cents: basePrice,
+      addons_cents: addonTotal,
+      total_cents: total,
+      total_display: '$' + formatPrice(total),
+    },
+    // Customer
+    customer: {
+      name: name,
+      email: email,
+      phone: phone,
+      notes: document.getElementById('customerNotes').value.trim(),
+    },
+    // Metadata
+    meta: {
+      source: "web",
+      submitted_at: new Date().toISOString(),
+      brand: BRAND.name,
+    }
+  };
+
+  try {
+    const response = await fetch(BRAND.webhook.booking, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      const msg = result.error || result.message || `Server error (${response.status})`;
+      showAlert('error', `Booking failed: ${msg}. Please call ${BRAND.phone}.`);
+      return;
+    }
+
+    // Success — show confirmation
+    showConfirmation(payload);
+
+  } catch (err) {
+    console.error('Booking error:', err);
+    let msg = "Could not reach the booking system.";
+    if (err.name === 'TypeError') msg = "Network error — please check your connection.";
+    showAlert('error', `${msg} Call us at ${BRAND.phone}.`);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '📅 Confirm Booking';
+  }
+}
+
+// ===================== CONFIRMATION =====================
+function showConfirmation(data) {
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('heroSection').style.display = 'none';
+
+  const existing = document.getElementById('confirmationPage');
+  if (existing) existing.remove();
+
+  const div = document.createElement('div');
+  div.id = 'confirmationPage';
+  div.innerHTML = `
+    <div class="confirmation-wrap">
+      <div class="emoji">✅</div>
+      <h2>Booking Request Received!</h2>
+      <p>Thanks, ${data.customer.name}. We've got your appointment request and will confirm shortly.</p>
+
+      <div class="detail-box">
+        <div class="detail-line">
+          <span class="label">Service</span>
+          <span class="value">${data.booking.service_full_name}</span>
+        </div>
+        <div class="detail-line">
+          <span class="label">Vehicle Size</span>
+          <span class="value">${data.booking.vehicle_size_label}</span>
+        </div>
+        <div class="detail-line">
+          <span class="label">Date & Time</span>
+          <span class="value">${data.booking.date} at ${formatTime(data.booking.time)}</span>
+        </div>
+        <div class="detail-line">
+          <span class="label">Location</span>
+          <span class="value">${data.booking.address}</span>
+        </div>
+        <div class="detail-line">
+          <span class="label">Total</span>
+          <span class="value" style="color:var(--c-accent);font-size:16px;">${data.pricing.total_display}</span>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:var(--text-light);">
+        We'll text you at ${data.customer.phone} to confirm.<br>
+        Questions? Call <a href="tel:${BRAND.phone}" style="color:var(--c-accent);">${BRAND.phone}</a>
+      </p>
+
+      <a href="tel:${BRAND.phone}" class="cta-btn">📞 Call to Confirm</a>
+    </div>
+  `;
+  document.body.appendChild(div);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===================== HELPERS =====================
+function formatPrice(cents) {
+  return (cents / 100).toFixed(2);
+}
+
+function formatTime(t) {
+  if (!t) return '';
+  const [h, m] = t.split(':');
+  const hour = parseInt(h);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+  return `${displayHour}:${m} ${ampm}`;
+}
+
+function showAlert(type, msg) {
+  const el = document.getElementById('alert' + type.charAt(0).toUpperCase() + type.slice(1));
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+function checkHours() {
+  const now = new Date();
+  const tz = BRAND.hours.timezone || "America/Chicago";
+  const local = new Date(now.toLocaleString("en-US", { timeZone: tz }));
+  const day = local.getDay();
+  const hour = local.getHours();
+  const minute = local.getMinutes();
+  const timeVal = hour * 60 + minute;
+  const openVal = BRAND.hours.openTime.hour * 60 + BRAND.hours.openTime.minute;
+  const closeVal = BRAND.hours.closeTime.hour * 60 + BRAND.hours.closeTime.minute;
+  const isOpenDay = BRAND.hours.openDays.includes(day);
+  const isOpen = isOpenDay && timeVal >= openVal && timeVal < closeVal;
+
+  const pill = document.getElementById('statusPill');
+  const text = document.getElementById('statusText');
+  if (isOpen) {
+    pill.classList.remove('closed');
+    text.textContent = BRAND.hours.openMessage;
+  } else {
+    pill.classList.add('closed');
+    text.textContent = BRAND.hours.closedMessage;
+  }
+}
+
+// ===================== START =====================
+init();
+</script>
+</body>
+</html>
